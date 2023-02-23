@@ -23,10 +23,69 @@ var numericKeyboard = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("↙️Kiruvchi hisoblar"),
 		tgbotapi.NewKeyboardButton("🌟Saralangan to'lovlar"),
+	),
 
-		// 	tgbotapi.NewKeyboardButton("👑Click Premium"),
-		// 	tgbotapi.NewKeyboardButton("💳Kartalarim"),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("💠Click-Hamyon"),
+		tgbotapi.NewKeyboardButton("😍KATTA CASHBACK"),
+	),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("🧮Mening qarzlarim"),
+	),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("📍Joylarda to'lov"),
+		tgbotapi.NewKeyboardButton("⚙️Sozlamlar"),
+	),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("💌Biz bilan aloqa"),
+		tgbotapi.NewKeyboardButton("🆕Nima Yangiliklar"),
+	),
+)
 
+var innumericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("1", "1"),
+		// tgbotapi.NewInlineKeyboardButtonURL("1.com", "http://1.com"),
+		tgbotapi.NewInlineKeyboardButtonData("2", "2"),
+		tgbotapi.NewInlineKeyboardButtonData("3", "3"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("4", "4"),
+		tgbotapi.NewInlineKeyboardButtonData("5", "5"),
+		tgbotapi.NewInlineKeyboardButtonData("6", "6"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("7", "7"),
+		tgbotapi.NewInlineKeyboardButtonData("8", "8"),
+		tgbotapi.NewInlineKeyboardButtonData("9", "9"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
+		// tgbotapi.NewInlineKeyboardButtonData("x", "/cleare"),
+		tgbotapi.NewInlineKeyboardButtonData("0", "0"),
+		// tgbotapi.NewInlineKeyboardButtonData("?", "?"),
+	),
+	// tgbotapi.NewInlineKeyboardRow(
+	// 	tgbotapi.NewInlineKeyboardButtonData("Bekor qilish", "/cancel"),
+	// 	tgbotapi.NewInlineKeyboardButtonData("info", "/info"),
+	// ),
+)
+
+var numericKeyboard2 = tgbotapi.NewReplyKeyboard(
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("Asosiy menyuga"),
+	),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("Mening uyim"),
+		tgbotapi.NewKeyboardButton("Avia chipta"),
+	),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("Mobil operatorlar"),
+		tgbotapi.NewKeyboardButton("Internet toplamlar"),
+	),
+
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("↙️Kiruvchi hisoblar"),
+		tgbotapi.NewKeyboardButton("🌟Saralangan to'lovlar"),
 	),
 
 	tgbotapi.NewKeyboardButtonRow(
@@ -75,6 +134,10 @@ func main() {
 			msg.ReplyMarkup = numericKeyboard
 		case "close":
 			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
+		case "💰Balans":
+			msg.ReplyMarkup = innumericKeyboard
+		case "💸To'lov":
+			msg.ReplyMarkup = numericKeyboard2
 		}
 
 		if _, err := bot.Send(msg); err != nil {
