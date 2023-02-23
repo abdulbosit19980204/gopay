@@ -108,7 +108,7 @@ var payKeyboard2 = tgbotapi.NewReplyKeyboard(
 
 var cardsKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 	tgbotapi.NewInlineKeyboardRow(
-		tgbotapi.NewInlineKeyboardButtonData("MKB***6473 HUMO", "6473"),
+		tgbotapi.NewInlineKeyboardButtonData("🌟MKB***6473 HUMO", "6473"),
 	),
 	tgbotapi.NewInlineKeyboardRow(
 		tgbotapi.NewInlineKeyboardButtonData("Aloqa***2980", "2980"),
@@ -155,9 +155,9 @@ func main() {
 			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 		case "💰Balans":
 			msg.ReplyMarkup = innumericKeyboard
-		case "💸To'lov":
+		case "💸To'lov", "/pay":
 			msg.ReplyMarkup = payKeyboard2
-		case "💳Kartalarim":
+		case "💳Kartalarim", "/cards":
 			msg.ReplyMarkup = cardsKeyboard
 		}
 
