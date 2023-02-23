@@ -6,7 +6,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-var numericKeyboard = tgbotapi.NewReplyKeyboard(
+var mainKeyboard = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("👑GoPay Premium"),
 		tgbotapi.NewKeyboardButton("💳Kartalarim"),
@@ -70,38 +70,57 @@ var innumericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 	// ),
 )
 
-var numericKeyboard2 = tgbotapi.NewReplyKeyboard(
+var payKeyboard2 = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("Asosiy menyuga"),
+		tgbotapi.NewKeyboardButton("🔙Asosiy menyuga"),
 	),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("Mening uyim"),
-		tgbotapi.NewKeyboardButton("Avia chipta"),
+		tgbotapi.NewKeyboardButton("🏠Mening uyim"),
+		tgbotapi.NewKeyboardButton("🛫Avia chipta"),
 	),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("Mobil operatorlar"),
-		tgbotapi.NewKeyboardButton("Internet toplamlar"),
-	),
-
-	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("↙️Kiruvchi hisoblar"),
-		tgbotapi.NewKeyboardButton("🌟Saralangan to'lovlar"),
+		tgbotapi.NewKeyboardButton("📱Mobil operatorlar"),
+		tgbotapi.NewKeyboardButton("📶Internet toplamlar"),
 	),
 
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("💠Click-Hamyon"),
-		tgbotapi.NewKeyboardButton("😍KATTA CASHBACK"),
+		tgbotapi.NewKeyboardButton("🛰Internet Provayderlar"),
+		tgbotapi.NewKeyboardButton("📺TV"),
+	),
+
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("📞Telefoniya"),
+		tgbotapi.NewKeyboardButton("🏦Kredit qaytarish"),
 	),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("🧮Mening qarzlarim"),
+		tgbotapi.NewKeyboardButton("🏡Komunal to'lovlar"),
+		tgbotapi.NewKeyboardButton("🌐Xosting va Domenlar"),
 	),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("📍Joylarda to'lov"),
-		tgbotapi.NewKeyboardButton("⚙️Sozlamlar"),
+		tgbotapi.NewKeyboardButton("📡Internet xizmatlar"),
+		tgbotapi.NewKeyboardButton("🕌Xayriya"),
 	),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("💌Biz bilan aloqa"),
-		tgbotapi.NewKeyboardButton("🆕Nima Yangiliklar"),
+		tgbotapi.NewKeyboardButton("🤑Soliqlar"),
+		tgbotapi.NewKeyboardButton("🏛Davlat xizmatlari va DYHXX(GAI)"),
+	),
+)
+
+var cardsKeyboard = tgbotapi.NewInlineKeyboardMarkup(
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("MKB***6473 HUMO", "6473"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("Aloqa***2980", "2980"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("Aloqa***6937 HUMO", "6937"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("GoPay***7777", "7777"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("Yangi karta qo'shish", "7"),
 	),
 )
 
@@ -130,14 +149,16 @@ func main() {
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 
 		switch update.Message.Text {
-		case "/start":
-			msg.ReplyMarkup = numericKeyboard
+		case "/start", "🔙Asosiy menyuga":
+			msg.ReplyMarkup = mainKeyboard
 		case "close":
 			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 		case "💰Balans":
 			msg.ReplyMarkup = innumericKeyboard
 		case "💸To'lov":
-			msg.ReplyMarkup = numericKeyboard2
+			msg.ReplyMarkup = payKeyboard2
+		case "💳Kartalarim":
+			msg.ReplyMarkup = cardsKeyboard
 		}
 
 		if _, err := bot.Send(msg); err != nil {
