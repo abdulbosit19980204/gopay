@@ -159,10 +159,25 @@ func main() {
 			msg.ReplyMarkup = payKeyboard2
 		case "💳Kartalarim", "/cards":
 			msg.ReplyMarkup = cardsKeyboard
+		case "setting", "⚙️Sozlamlar":
+			photo := tgbotapi.NewPhoto(update.Message.From.ID, tgbotapi.FilePath("gopay/gopay/img/gopay.png"))
+			if _, err = bot.Send(photo); err != nil {
+				log.Fatalln(err)
+			}
+		default:
+			msg.ReplyMarkup = mainKeyboard
 		}
 
 		if _, err := bot.Send(msg); err != nil {
 			log.Panic(err)
 		}
+
+		/*
+			photo := tgbotapi.NewPhoto(update.Message.From.ID, tgbotapi.FilePath("gopay/gopay/img/gopay.png"))
+			if _, err = bot.Send(photo); err != nil {
+				log.Fatalln(err)
+			}*/
+
 	}
+
 }
