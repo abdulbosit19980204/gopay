@@ -8,8 +8,13 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	// "github.com/wcharczuk/go-chart"
 
+	"database/sql"
+	"fmt"
+
 	"github.com/wcharczuk/go-chart/v2"
 	"github.com/wcharczuk/go-chart/v2/drawing"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var mainKeyboard = tgbotapi.NewReplyKeyboard(
@@ -54,7 +59,6 @@ var mainKeyboard = tgbotapi.NewReplyKeyboard(
 var innumericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 	tgbotapi.NewInlineKeyboardRow(
 		tgbotapi.NewInlineKeyboardButtonData("1", "1"),
-		// tgbotapi.NewInlineKeyboardButtonURL("1.com", "http://1.com"),
 		tgbotapi.NewInlineKeyboardButtonData("2", "2"),
 		tgbotapi.NewInlineKeyboardButtonData("3", "3"),
 	),
@@ -73,10 +77,11 @@ var innumericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardButtonData("0", "0"),
 		// tgbotapi.NewInlineKeyboardButtonData("?", "?"),
 	),
-	// tgbotapi.NewInlineKeyboardRow(
-	// 	tgbotapi.NewInlineKeyboardButtonData("Bekor qilish", "/cancel"),
-	// 	tgbotapi.NewInlineKeyboardButtonData("info", "/info"),
-	// ),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("Bekor qilish", "/cancel"),
+		tgbotapi.NewInlineKeyboardButtonData("info", "/info"),
+		tgbotapi.NewInlineKeyboardButtonURL("abdulbosit.uz", "https://abdulbositt.netlify.app/"),
+	),
 )
 
 var payKeyboard2 = tgbotapi.NewReplyKeyboard(
@@ -146,9 +151,35 @@ var ExchangeKeyboard = tgbotapi.NewReplyKeyboard(
 	),
 )
 
+type Employees struct {
+	emp_no     int
+	birth_date string
+	first_name string
+	last_name  string
+}
+type salaries struct {
+	emp_no    int
+	salary    int
+	from_date string
+	to_date   string
+}
+
 func main() {
+
+	// Bazaga ulanish shu yerdan boshlanadi
+	db, err := sql.Open("mysql", "root:1101@tcp(127.0.0.1:3306)/employees")
+	defer db.Close()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	res, err := db.Query("SELECT emp_no,first_name,last_name, birth_date FROM employees where emp_no =10001 LIMIT 1 ")
+	sal, err := db.Query("Select * from salaries LIMIT 5 OFFSET 20")
+	defer res.Close()
+	defer sal.Close()
 	bot, err := tgbotapi.NewBotAPI("1069768597:AAHlO1zhlyh7PsTUwLxZ2DkLmPhoj5qK7MM")
-	// bot, err := tgbotapi.NewBotAPI("6282679704:AAGbM-7Af1ccquhHFa_y0wTDMadbABBThQI")
+	//bot, err = tgbotapi.NewBotAPI("6282679704:AAGbM-7Af1ccquhHFa_y0wTDMadbABBThQI")
 
 	if err != nil {
 		log.Panic(err)
@@ -194,11 +225,45 @@ func main() {
 			if _, err = bot.Send(photo); err != nil {
 				log.Fatalln(err)
 			}
+			if err != nil {
+				log.Fatal(err)
+			}
+			for res.Next() {
+
+				var emp_info Employees
+				err := res.Scan(&emp_info.emp_no, &emp_info.first_name, &emp_info.last_name, &emp_info.birth_date)
+
+				if err != nil {
+					log.Fatal(err)
+				}
+				tgSentMessage := fmt.Sprint("🔐ID: ", emp_info.emp_no, "📌 FIO: ", emp_info.first_name+" "+emp_info.last_name, " 📆 - ", emp_info.birth_date)
+				msg = tgbotapi.NewMessage(update.Message.Chat.ID, tgSentMessage)
+				// if _, err := bot.Send(msg); err != nil {
+				// 	log.Panic(err)
+				// }
+				fmt.Printf("%v\n", emp_info)
+
+			}
 		case "📆 To'lovlar Tarixi", "/history":
 			analysis()
 			photo := tgbotapi.NewPhoto(update.Message.From.ID, tgbotapi.FilePath("output.png"))
 			if _, err = bot.Send(photo); err != nil {
 				log.Fatalln(err)
+			}
+			for sal.Next() {
+				var sal_info salaries
+				err := sal.Scan(&sal_info.emp_no, &sal_info.salary, &sal_info.from_date, &sal_info.to_date)
+
+				if err != nil {
+					log.Fatal(err)
+				}
+				fmt.Println(sal_info)
+				fmt.Printf("%v\n", sal_info)
+				tgSentMessage := fmt.Sprint("📆", sal_info.from_date, " - 💵 ", sal_info.salary)
+				msg = tgbotapi.NewMessage(update.Message.Chat.ID, tgSentMessage)
+				if _, err := bot.Send(msg); err != nil {
+					log.Panic(err)
+				}
 			}
 		case "🔀O'tkazmalar":
 			Chart()
