@@ -148,8 +148,8 @@ var ExchangeKeyboard = tgbotapi.NewReplyKeyboard(
 
 func main() {
 	bot, err := tgbotapi.NewBotAPI("1069768597:AAHlO1zhlyh7PsTUwLxZ2DkLmPhoj5qK7MM")
-	// bot, err := tgbotapi.NewBotAPI("282679704:AAEQoq5g5t2S3YEZ5SxvvSNQVxLS7vYPUpM")
-	//gopay 6282679704:AAEQoq5g5t2S3YEZ5SxvvSNQVxLS7vYPUpM token
+	// bot, err := tgbotapi.NewBotAPI("6282679704:AAGbM-7Af1ccquhHFa_y0wTDMadbABBThQI")
+
 	if err != nil {
 		log.Panic(err)
 	}
