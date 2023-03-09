@@ -14,6 +14,9 @@ import (
 
 var mainKeyboard = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("🔄Exchange"),
+	),
+	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("👑GoPay Premium"),
 		tgbotapi.NewKeyboardButton("💳Kartalarim"),
 	),
@@ -130,6 +133,19 @@ var cardsKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 	),
 )
 
+var ExchangeKeyboard = tgbotapi.NewReplyKeyboard(
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("🇺🇿 Uzb"),
+		tgbotapi.NewKeyboardButton("🇺🇸 USD"),
+		tgbotapi.NewKeyboardButton("🇪🇺 EURO"),
+	),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("🇸🇦 Riyal"),
+		tgbotapi.NewKeyboardButton("🇹🇷 Lira"),
+		tgbotapi.NewKeyboardButton("🇰🇷 Won"),
+	),
+)
+
 func main() {
 	bot, err := tgbotapi.NewBotAPI("1069768597:AAHlO1zhlyh7PsTUwLxZ2DkLmPhoj5qK7MM")
 	// bot, err := tgbotapi.NewBotAPI("282679704:AAEQoq5g5t2S3YEZ5SxvvSNQVxLS7vYPUpM")
@@ -157,6 +173,9 @@ func main() {
 		switch update.Message.Text {
 		case "/start", "🔙Asosiy menyuga":
 			msg.ReplyMarkup = mainKeyboard
+		case "/exchange", "🔄Exchange":
+			msg = tgbotapi.NewMessage(update.Message.Chat.ID, "Asosiy Kursni tanlang")
+			msg.ReplyMarkup = ExchangeKeyboard
 		case "close":
 			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 		case "💰Balans":
