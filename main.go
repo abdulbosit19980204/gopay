@@ -217,7 +217,7 @@ func main() {
 				log.Fatalln(err)
 			}
 		case "setting", "⚙️Sozlamlar":
-			photo := tgbotapi.NewPhoto(update.Message.From.ID, tgbotapi.FilePath("gopay/gopay/img/gopay.png"))
+			photo := tgbotapi.NewPhoto(update.Message.From.ID, tgbotapi.FilePath("img/gopay.png"))
 			if _, err = bot.Send(photo); err != nil {
 				log.Fatalln(err)
 			}
