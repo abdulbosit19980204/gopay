@@ -174,10 +174,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	res, err := db.Query("SELECT emp_no,first_name,last_name, birth_date FROM employees where emp_no =10001 LIMIT 1 ")
-	sal, err := db.Query("Select * from salaries LIMIT 5 OFFSET 20")
-	defer res.Close()
-	defer sal.Close()
 	bot, err := tgbotapi.NewBotAPI("1069768597:AAHlO1zhlyh7PsTUwLxZ2DkLmPhoj5qK7MM")
 	//bot, err = tgbotapi.NewBotAPI("6282679704:AAGbM-7Af1ccquhHFa_y0wTDMadbABBThQI")
 
@@ -225,6 +221,10 @@ func main() {
 			if _, err = bot.Send(photo); err != nil {
 				log.Fatalln(err)
 			}
+
+			res, err := db.Query("SELECT emp_no,first_name,last_name, birth_date FROM employees LIMIT 5 ")
+			defer res.Close()
+
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -236,11 +236,17 @@ func main() {
 				if err != nil {
 					log.Fatal(err)
 				}
-				tgSentMessage := fmt.Sprint("🔐ID: ", emp_info.emp_no, "📌 FIO: ", emp_info.first_name+" "+emp_info.last_name, " 📆 - ", emp_info.birth_date)
-				msg = tgbotapi.NewMessage(update.Message.Chat.ID, tgSentMessage)
-				// if _, err := bot.Send(msg); err != nil {
-				// 	log.Panic(err)
-				// }
+				tgSentMessage := fmt.Sprint("🔐ID: ", emp_info.emp_no, "📌 FIO: ", emp_info.first_name, " ", emp_info.last_name, " 📆 - ", emp_info.birth_date)
+
+				if emp_info.emp_no == 10001 {
+					msg = tgbotapi.NewMessage(update.Message.Chat.ID, tgSentMessage+"\n Siz ning sozlamlaringiz yuborildi")
+				} else {
+					msg = tgbotapi.NewMessage(update.Message.Chat.ID, tgSentMessage)
+				}
+
+				if _, err := bot.Send(msg); err != nil {
+					log.Panic(err)
+				}
 				fmt.Printf("%v\n", emp_info)
 
 			}
@@ -249,6 +255,11 @@ func main() {
 			photo := tgbotapi.NewPhoto(update.Message.From.ID, tgbotapi.FilePath("output.png"))
 			if _, err = bot.Send(photo); err != nil {
 				log.Fatalln(err)
+			}
+			sal, err := db.Query("Select * from salaries LIMIT 5 OFFSET 20")
+			defer sal.Close()
+			if err != nil {
+				log.Fatal(err)
 			}
 			for sal.Next() {
 				var sal_info salaries
